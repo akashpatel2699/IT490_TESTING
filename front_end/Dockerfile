@@ -2,14 +2,24 @@ FROM node:15.7.0-alpine3.10
 
 MAINTAINER AKASH PATEL
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY ./package.json /app
+COPY . .
 
-RUN npm install 
+RUN cd client && npm install && npm run build
 
-COPY . /app
+WORKDIR /usr/src/app
+
+RUN cd server && npm install
 
 EXPOSE 3000
 
-CMD ["npm", "run","dev"]
+WORKDIR /usr/src/app
+
+# CMD ["node","../server/server.js","&","npm","run","dev"]
+
+#RUN apk add bash
+
+CMD ["node","./server/server.js"]
+
+# CMD ["./start.sh"]
